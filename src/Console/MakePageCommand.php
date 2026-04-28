@@ -103,7 +103,7 @@ final class MakePageCommand extends Command
             );
 
             $useStatements = "\n".implode("\n", $imports);
-            $traitBlock    = "\n    use ".implode(";\n    use ", $concerns).";\n";
+            $traitBlock    = "\n    use ".implode(";\n    use ", $concerns).";\n\n";
         }
 
         return <<<PHP
