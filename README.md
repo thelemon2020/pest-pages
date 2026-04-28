@@ -94,6 +94,54 @@ it('allows a user to log in', function () {
 
 ## Creating Page Objects
 
+### Artisan Generator
+
+The quickest way to create a page is with the included Artisan command:
+
+```bash
+php artisan pest:page Login
+```
+
+This creates `tests/Browser/Pages/LoginPage.php` with a basic scaffold. The `Page` suffix is optional — it won't be doubled if you include it.
+
+Pass `--concerns` to include traits in the generated class:
+
+```bash
+php artisan pest:page Register --concerns=forms,alerts
+php artisan pest:page UserSettings --concerns=forms,alerts,modals,navigation
+```
+
+Available concern names: `forms`, `alerts`, `modals`, `navigation`.
+
+The generated file for `pest:page Register --concerns=forms,alerts` looks like:
+
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace Tests\Browser\Pages;
+
+use Thelemon2020\PestPages\Page;
+use Thelemon2020\PestPages\Concerns\InteractsWithForms;
+use Thelemon2020\PestPages\Concerns\InteractsWithAlerts;
+
+class RegisterPage extends Page
+{
+    use InteractsWithForms;
+    use InteractsWithAlerts;
+
+    public static function url(): string
+    {
+        return '/';
+    }
+}
+```
+
+The namespace is inferred automatically from your project's `composer.json` `autoload-dev` PSR-4 map, falling back to `Tests\Browser\Pages`.
+
+### Manually
+
 Create a class for each page (or distinct section of a page) in your application, extending the abstract `Page` base class.
 
 ```php
