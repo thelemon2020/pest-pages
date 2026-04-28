@@ -1,0 +1,40 @@
+{
+    "$schema": "https://getcomposer.org/schema.json",
+    "name": "thelemon2020/pest-pages",
+    "description": "A Pest plugin for writing browser tests using the Page Object Model.",
+    "keywords": [
+        "pest",
+        "plugin",
+        "browser",
+        "testing",
+        "page-object-model"
+    ],
+    "license": "MIT",
+    "type": "library",
+    "require": {
+        "php": "^8.3",
+        "pestphp/pest": "^4.0",
+        "pestphp/pest-plugin-browser": "^4.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Thelemon2020\\PestPages\\": "src/"
+        },
+        "files": ["src/Autoload.php"]
+    },
+    "extra": {
+        "pest": {
+            "plugins": [
+                "Thelemon2020\\PestPages\\Plugin"
+            ]
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        },
+        "sort-packages": true
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}
