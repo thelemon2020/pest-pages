@@ -1,6 +1,6 @@
 {
     "$schema": "https://getcomposer.org/schema.json",
-    "name": "thelemon2020/pest-pages",
+    "name": "thelemon2020/pest-pom",
     "description": "A Pest plugin for writing browser tests using the Page Object Model.",
     "keywords": [
         "pest",
@@ -23,24 +23,24 @@
     },
     "autoload": {
         "psr-4": {
-            "Thelemon2020\\PestPages\\": "src/"
+            "Thelemon2020\\PestPom\\": "src/"
         },
         "files": ["src/Autoload.php"]
     },
     "autoload-dev": {
         "psr-4": {
-            "Thelemon2020\\PestPages\\Tests\\": "tests/"
+            "Thelemon2020\\PestPom\\Tests\\": "tests/"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "Thelemon2020\\PestPages\\PestPagesServiceProvider"
+                "Thelemon2020\\PestPom\\PestPomServiceProvider"
             ]
         },
         "pest": {
             "plugins": [
-                "Thelemon2020\\PestPages\\Plugin"
+                "Thelemon2020\\PestPom\\Plugin"
             ]
         }
     },

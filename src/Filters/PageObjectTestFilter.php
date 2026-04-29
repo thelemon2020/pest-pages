@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Thelemon2020\PestPages\Filters;
+namespace Thelemon2020\PestPom\Filters;
 
 use Closure;
 use Pest\Browser\Plugin as BrowserPlugin;

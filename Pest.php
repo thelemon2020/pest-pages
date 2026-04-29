@@ -2,4 +2,4 @@
 
 declare(strict_types=1);
 
-uses(Thelemon2020\PestPages\Tests\TestCase::class)->in('tests');
+uses(Thelemon2020\PestPom\Tests\TestCase::class)->in('tests');

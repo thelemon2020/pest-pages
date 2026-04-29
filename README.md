@@ -1,4 +1,4 @@
-# Pest Pages
+# Pest POM
 
 A [Pest](https://pestphp.com) plugin for writing expressive browser tests using the **Page Object Model** pattern.
 
@@ -15,16 +15,16 @@ Page Objects keep your browser tests readable and maintainable by encapsulating 
 ## Installation
 
 ```bash
-composer require thelemon2020/pest-pages --dev
+composer require thelemon2020/pest-pom --dev
 ```
 
 ### Publishing the config
 
 ```bash
-php artisan vendor:publish --tag=pest-pages-config
+php artisan vendor:publish --tag=pest-pom-config
 ```
 
-This creates `config/pest-pages.php`:
+This creates `config/pest-pom.php`:
 
 ```php
 return [
@@ -45,8 +45,8 @@ Each page in your application is represented by a class that extends `Page`. The
 ```php
 namespace Tests\Browser\Pages;
 
-use Thelemon2020\PestPages\Page;
-use Thelemon2020\PestPages\Concerns\InteractsWithForms;
+use Thelemon2020\PestPom\Page;
+use Thelemon2020\PestPom\Concerns\InteractsWithForms;
 
 class LoginPage extends Page
 {
@@ -138,9 +138,9 @@ declare(strict_types=1);
 
 namespace Tests\Browser\Pages;
 
-use Thelemon2020\PestPages\Page;
-use Thelemon2020\PestPages\Concerns\InteractsWithForms;
-use Thelemon2020\PestPages\Concerns\InteractsWithAlerts;
+use Thelemon2020\PestPom\Page;
+use Thelemon2020\PestPom\Concerns\InteractsWithForms;
+use Thelemon2020\PestPom\Concerns\InteractsWithAlerts;
 
 class RegisterPage extends Page
 {
@@ -163,7 +163,7 @@ Create a class for each page (or distinct section of a page) in your application
 ```php
 namespace Tests\Browser\Pages;
 
-use Thelemon2020\PestPages\Page;
+use Thelemon2020\PestPom\Page;
 
 class DashboardPage extends Page
 {
@@ -202,7 +202,7 @@ The plugin ships with four traits that cover common browser interactions. Includ
 ### `InteractsWithForms`
 
 ```php
-use Thelemon2020\PestPages\Concerns\InteractsWithForms;
+use Thelemon2020\PestPom\Concerns\InteractsWithForms;
 
 class RegistrationPage extends Page
 {
@@ -239,7 +239,7 @@ page(RegistrationPage::class)
 ### `InteractsWithAlerts`
 
 ```php
-use Thelemon2020\PestPages\Concerns\InteractsWithAlerts;
+use Thelemon2020\PestPom\Concerns\InteractsWithAlerts;
 
 class ProfilePage extends Page
 {
@@ -271,7 +271,7 @@ page(ProfilePage::class)
 ### `InteractsWithModals`
 
 ```php
-use Thelemon2020\PestPages\Concerns\InteractsWithModals;
+use Thelemon2020\PestPom\Concerns\InteractsWithModals;
 
 class UserListPage extends Page
 {
@@ -303,7 +303,7 @@ page(UserListPage::class)
 ### `InteractsWithNavigation`
 
 ```php
-use Thelemon2020\PestPages\Concerns\InteractsWithNavigation;
+use Thelemon2020\PestPom\Concerns\InteractsWithNavigation;
 
 class ArticlePage extends Page
 {
@@ -359,9 +359,9 @@ Here is a complete end-to-end registration flow demonstrating Page Objects, trai
 // tests/Browser/Pages/RegistrationPage.php
 namespace Tests\Browser\Pages;
 
-use Thelemon2020\PestPages\Page;
-use Thelemon2020\PestPages\Concerns\InteractsWithAlerts;
-use Thelemon2020\PestPages\Concerns\InteractsWithForms;
+use Thelemon2020\PestPom\Page;
+use Thelemon2020\PestPom\Concerns\InteractsWithAlerts;
+use Thelemon2020\PestPom\Concerns\InteractsWithForms;
 
 class RegistrationPage extends Page
 {
@@ -391,8 +391,8 @@ class RegistrationPage extends Page
 // tests/Browser/Pages/DashboardPage.php
 namespace Tests\Browser\Pages;
 
-use Thelemon2020\PestPages\Page;
-use Thelemon2020\PestPages\Concerns\InteractsWithNavigation;
+use Thelemon2020\PestPom\Page;
+use Thelemon2020\PestPom\Concerns\InteractsWithNavigation;
 
 class DashboardPage extends Page
 {

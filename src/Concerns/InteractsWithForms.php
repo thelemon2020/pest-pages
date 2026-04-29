@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Thelemon2020\PestPages\Concerns;
+namespace Thelemon2020\PestPom\Concerns;
 
-use Thelemon2020\PestPages\Page;
+use Thelemon2020\PestPom\Page;
 
 /**
  * @mixin Page

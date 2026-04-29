@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Thelemon2020\PestPages\Console;
+namespace Thelemon2020\PestPom\Console;
 
 use Illuminate\Console\Command;
-use Thelemon2020\PestPages\Config;
+use Thelemon2020\PestPom\Config;
 
 final class MakePageCommand extends Command
 {
@@ -108,7 +108,7 @@ final class MakePageCommand extends Command
 
         if ($concerns !== []) {
             $imports = array_map(
-                fn (string $c) => "use Thelemon2020\\PestPages\\Concerns\\{$c};",
+                fn (string $c) => "use Thelemon2020\\PestPom\\Concerns\\{$c};",
                 $concerns,
             );
 
@@ -123,7 +123,7 @@ final class MakePageCommand extends Command
 
         namespace {$namespace};
 
-        use Thelemon2020\PestPages\Page;{$useStatements}
+        use Thelemon2020\PestPom\Page;{$useStatements}
 
         class {$className} extends Page
         {{$traitBlock}

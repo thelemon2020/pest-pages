@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Thelemon2020\PestPages\Tests\Fixtures;
+namespace Thelemon2020\PestPom\Tests\Fixtures;
 
-use Thelemon2020\PestPages\Page;
+use Thelemon2020\PestPom\Page;
 
 class ExamplePage extends Page
 {

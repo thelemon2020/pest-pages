@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Thelemon2020\PestPages;
+namespace Thelemon2020\PestPom;
 
 use Pest\Browser\Api\AwaitableWebpage;
 use Pest\Browser\Api\PendingAwaitablePage;

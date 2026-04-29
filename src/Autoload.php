@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Thelemon2020\PestPages;
+namespace Thelemon2020\PestPom;
 
 require_once __DIR__.'/Expectations.php';
 

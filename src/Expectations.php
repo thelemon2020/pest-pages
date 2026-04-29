@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use Pest\Expectation;
-use Thelemon2020\PestPages\Page;
+use Thelemon2020\PestPom\Page;
 
 expect()->extend('toBeOnPage', function (string $pageClass): Expectation {
     /** @var Page $page */

@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-use Thelemon2020\PestPages\Config;
-use Thelemon2020\PestPages\Tests\Fixtures\ExamplePage;
+use Thelemon2020\PestPom\Config;
+use Thelemon2020\PestPom\Tests\Fixtures\ExamplePage;
 
 it('does not throw when a page class lives in the configured directory', function () {
     $fixturesDir = dirname((new ReflectionClass(ExamplePage::class))->getFileName());
-    config(['pest-pages.path' => $fixturesDir]);
+    config(['pest-pom.path' => $fixturesDir]);
 
     Config::assertPageIsInConfiguredDirectory(ExamplePage::class);
 

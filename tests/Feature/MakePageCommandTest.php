@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use Thelemon2020\PestPages\Config;
+use Thelemon2020\PestPom\Config;
 
 afterEach(function () {
     $dir = Config::absolutePath();
@@ -72,8 +72,8 @@ it('includes requested concerns in the generated class', function () {
     expect($content)
         ->toContain('use InteractsWithForms')
         ->toContain('use InteractsWithAlerts')
-        ->toContain('use Thelemon2020\\PestPages\\Concerns\\InteractsWithForms')
-        ->toContain('use Thelemon2020\\PestPages\\Concerns\\InteractsWithAlerts');
+        ->toContain('use Thelemon2020\\PestPom\\Concerns\\InteractsWithForms')
+        ->toContain('use Thelemon2020\\PestPom\\Concerns\\InteractsWithAlerts');
 });
 
 it('warns about unknown concerns and skips them', function () {
@@ -111,7 +111,7 @@ it('falls back to Tests\\Browser\\Pages when no PSR-4 map matches', function () 
 });
 
 it('uses the configured path when generating files', function () {
-    config(['pest-pages.path' => 'tests/Custom/Pages']);
+    config(['pest-pom.path' => 'tests/Custom/Pages']);
 
     $this->artisan('pest:page', ['name' => 'Login'])->assertSuccessful();
 

@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Thelemon2020\PestPages;
+namespace Thelemon2020\PestPom;
 
 use Pest\Contracts\Plugins\Bootable;
 use Pest\TestSuite;
-use Thelemon2020\PestPages\Filters\PageObjectTestFilter;
+use Thelemon2020\PestPom\Filters\PageObjectTestFilter;
 
 final class Plugin implements Bootable
 {
