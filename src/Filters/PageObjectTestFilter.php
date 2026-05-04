@@ -81,7 +81,7 @@ final readonly class PageObjectTestFilter implements TestCaseMethodFilter
                 continue;
             }
 
-            $tokenValue = mb_strtolower(mb_ltrim($tokens[$i][1], '\\'));
+            $tokenValue = mb_strtolower(ltrim($tokens[$i][1], '\\'));
             $next = $tokens[$i + 1] ?? null;
             $prev = $tokens[$i - 1] ?? null;
 

@@ -25,8 +25,13 @@ abstract class Component
 
     /**
      * The CSS selector that identifies this component's root element on the page.
+     * Override in subclasses. Automatic interaction scoping is not yet implemented —
+     * this value is available for use in your own component methods.
      */
-    abstract public static function selector(): string;
+    public static function selector(): string
+    {
+        return '';
+    }
 
     /**
      * Delegates all calls to the underlying Pest browser page.

@@ -32,6 +32,6 @@ trait InteractsWithAlerts
      */
     public function assertFieldError(string $field, string $message): static
     {
-        return $this->assertSee($message);
+        return $this->assertSeeIn($field, $message);
     }
 }

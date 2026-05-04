@@ -134,6 +134,7 @@ final class MakeComponentCommand extends Command
         {{$traitBlock}
             public static function selector(): string
             {
+                // TODO: return the CSS selector for this component's root element
                 return '';
             }
         }

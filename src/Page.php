@@ -47,10 +47,9 @@ abstract class Page
     /**
      * Create a typed Component instance backed by this page's browser session.
      *
-     * @template TComponent of Component
      *
-     * @param  class-string<TComponent>  $componentClass
-     * @return TComponent
+     * @param  class-string<Component>  $componentClass
+     * @return Component
      */
     public function component(string $componentClass): Component
     {
@@ -61,11 +60,9 @@ abstract class Page
      * Re-wrap the current browser session as a different page type without navigating.
      * Use after an action that causes a server-side redirect (e.g. form submit).
      * Throws if the browser's current URL path does not match the page's URL.
-     *
-     * @template TPage of Page
-     *
-     * @param  class-string<TPage>  $pageClass
-     * @return TPage
+     **
+     * @param  class-string<Page>  $pageClass
+     * @return Page
      */
     public function nowOn(string $pageClass): Page
     {
@@ -101,11 +98,9 @@ abstract class Page
     /**
      * Explicitly navigate to a different page class.
      * Use when an action (e.g. submitting a form) takes you to a new screen.
-     *
-     * @template TPage of Page
-     *
-     * @param  class-string<TPage>  $pageClass
-     * @return TPage
+     **
+     * @param  class-string<Page>  $pageClass
+     * @return Page
      */
     public function navigateTo(string $pageClass): Page
     {
