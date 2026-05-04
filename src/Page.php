@@ -114,7 +114,16 @@ abstract class Page
             return new $pageClass(new AwaitableWebpage($this->browser->page(), $url));
         }
 
-        return new $pageClass(visit($pageClass::url()));
+        return new $pageClass($this->createVisit($pageClass::url()));
+    }
+
+    /**
+     * Performs a fresh browser visit. Extracted so tests can override it
+     * without starting a real Playwright connection.
+     */
+    protected function createVisit(string $url): PendingAwaitablePage
+    {
+        return visit($url);
     }
 
     /**

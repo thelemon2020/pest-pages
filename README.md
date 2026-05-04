@@ -222,6 +222,106 @@ it('redirects to the dashboard after login', function () {
 
 ---
 
+## Components
+
+Components let you encapsulate a reusable piece of UI — a navigation bar, a data table, a search widget — into its own class, separate from any particular page. A `Component` works exactly like a `Page`: it exposes methods that describe meaningful interactions and returns `static` for fluent chaining. The difference is that a component has no URL and is always obtained through a page, sharing the same browser session.
+
+### Creating Components
+
+Use the Artisan generator to scaffold a component:
+
+```bash
+php artisan pest:component SearchBar
+```
+
+This creates `tests/Browser/Components/SearchBarComponent.php`. The `Component` suffix is optional and won't be doubled.
+
+Pass `--concerns` to include traits, just like with pages:
+
+```bash
+php artisan pest:component SearchBar --concerns=forms
+php artisan pest:component DataTable --concerns=navigation,modals
+```
+
+The generated file looks like:
+
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace Tests\Browser\Components;
+
+use Thelemon2020\PestPom\Component;
+
+class SearchBarComponent extends Component
+{
+    public static function selector(): string
+    {
+        return '';
+    }
+}
+```
+
+Fill in `selector()` with the CSS selector that identifies the component's root element, then add your interaction methods.
+
+### Using Components
+
+Call `component()` on any page instance, passing the component class name:
+
+```php
+$search = page(DashboardPage::class)->component(SearchBarComponent::class);
+```
+
+This returns a `SearchBarComponent` instance backed by the same browser session as the page. From there, call any methods you have defined on the component:
+
+```php
+page(DashboardPage::class)
+    ->component(SearchBarComponent::class)
+    ->search('pest php')
+    ->assertSee('pest-plugin-browser');
+```
+
+### Example Component
+
+```php
+namespace Tests\Browser\Components;
+
+use Thelemon2020\PestPom\Component;
+use Thelemon2020\PestPom\Concerns\InteractsWithForms;
+
+class SearchBarComponent extends Component
+{
+    use InteractsWithForms;
+
+    public static function selector(): string
+    {
+        return '#search-bar';
+    }
+
+    public function search(string $query): static
+    {
+        return $this
+            ->fillForm(['Search' => $query])
+            ->submitForm('Search');
+    }
+}
+```
+
+```php
+it('returns results for a valid search', function () {
+    page(DashboardPage::class)
+        ->component(SearchBarComponent::class)
+        ->search('pest php')
+        ->assertSee('No results found')
+        ->assertSee('pest-plugin-browser');
+});
+```
+
+Components support all four concern traits (`InteractsWithForms`, `InteractsWithAlerts`, `InteractsWithModals`, `InteractsWithNavigation`) in exactly the same way as pages.
+
+---
+
 ## Available Concerns (Traits)
 
 The plugin ships with four traits that cover common browser interactions. Include only the ones each Page Object needs.
