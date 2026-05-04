@@ -181,7 +181,11 @@ class DashboardPage extends Page
 
 ### Navigating Between Pages
 
-When an action on one page causes a navigation to another, use `navigateTo()` to get a typed instance of the destination page:
+There are two ways to move from one page object to another, depending on whether you want the browser to navigate or whether it has already arrived.
+
+#### `navigateTo()`
+
+Explicitly navigates the browser to the destination page's URL and returns a typed instance. Use this when you want to send the browser somewhere directly — the session and authentication cookies are preserved across the navigation.
 
 ```php
 it('redirects to the dashboard after login', function () {
@@ -192,6 +196,29 @@ it('redirects to the dashboard after login', function () {
     $dashboard->assertWelcomeMessage('Jane');
 });
 ```
+
+#### `nowOn()`
+
+Re-wraps the current browser session as a different page type **without reloading the page**. Use this after an action (like submitting a form) that causes a server-side redirect — the browser has already landed on the new page, so there's no need to navigate again.
+
+`nowOn()` verifies that the browser's current URL matches the destination page's URL and throws an exception if it doesn't, catching unexpected redirects (e.g. an auth failure that sends the user back to `/login`) immediately.
+
+```php
+it('redirects to the dashboard after login', function () {
+    $dashboard = page(LoginPage::class)
+        ->loginAs('jane@example.com', 'password')
+        ->nowOn(DashboardPage::class);  // no reload — already here after the POST redirect
+
+    $dashboard->assertWelcomeMessage('Jane');
+});
+```
+
+| | `navigateTo()` | `nowOn()` |
+|---|---|---|
+| Navigates the browser | Yes | No |
+| Preserves session | Yes | Yes |
+| Verifies current URL | No | Yes |
+| Use when | You want to send the browser somewhere | The browser already arrived via redirect |
 
 ---
 
@@ -420,7 +447,7 @@ use Tests\Browser\Pages\RegistrationPage;
 it('allows a new user to register', function () {
     $dashboard = page(RegistrationPage::class)
         ->register('Jane Doe', 'jane@example.com', 'password')
-        ->navigateTo(DashboardPage::class);
+        ->nowOn(DashboardPage::class);  // server redirected here after successful registration
 
     expect($dashboard)
         ->toBeOnPage(DashboardPage::class)

@@ -6,6 +6,7 @@ namespace Thelemon2020\PestPom;
 
 use Pest\Browser\Api\AwaitableWebpage;
 use Pest\Browser\Api\PendingAwaitablePage;
+use Pest\Browser\Support\ComputeUrl;
 
 /**
  * Base class for all page objects.
@@ -21,7 +22,7 @@ abstract class Page
      */
     protected PendingAwaitablePage|AwaitableWebpage $browser;
 
-    final public function __construct(PendingAwaitablePage $browser)
+    final public function __construct(PendingAwaitablePage|AwaitableWebpage $browser)
     {
         $this->browser = $browser;
     }
@@ -57,6 +58,47 @@ abstract class Page
     }
 
     /**
+     * Re-wrap the current browser session as a different page type without navigating.
+     * Use after an action that causes a server-side redirect (e.g. form submit).
+     * Throws if the browser's current URL path does not match the page's URL.
+     *
+     * @template TPage of Page
+     *
+     * @param  class-string<TPage>  $pageClass
+     * @return TPage
+     */
+    public function nowOn(string $pageClass): Page
+    {
+        $currentUrl = $this->currentBrowserUrl();
+
+        if ($currentUrl !== null) {
+            $currentPath = rtrim((string) parse_url($currentUrl, PHP_URL_PATH), '/');
+            $expectedPath = rtrim((string) parse_url($pageClass::url(), PHP_URL_PATH), '/');
+
+            if ($currentPath !== $expectedPath) {
+                throw new \RuntimeException(
+                    "Expected to be on [{$expectedPath}] but the browser is at [{$currentPath}]."
+                );
+            }
+        }
+
+        return new $pageClass($this->browser);
+    }
+
+    /**
+     * Returns the browser's current URL, or null when the browser has not yet been resolved.
+     * Extracted so tests can override it without needing a live Playwright connection.
+     */
+    protected function currentBrowserUrl(): ?string
+    {
+        if (! $this->browser instanceof AwaitableWebpage) {
+            return null;
+        }
+
+        return $this->browser->page()->url();
+    }
+
+    /**
      * Explicitly navigate to a different page class.
      * Use when an action (e.g. submitting a form) takes you to a new screen.
      *
@@ -67,6 +109,16 @@ abstract class Page
      */
     public function navigateTo(string $pageClass): Page
     {
+        // When the browser is already resolved, reuse the existing Playwright page
+        // (and its context) so cookies/session/auth state are preserved.
+        // Calling visit() would create a new browser context (fresh incognito), losing the session.
+        if ($this->browser instanceof AwaitableWebpage) {
+            $url = ComputeUrl::from($pageClass::url());
+            $this->browser->page()->goto($url);
+
+            return new $pageClass(new AwaitableWebpage($this->browser->page(), $url));
+        }
+
         return new $pageClass(visit($pageClass::url()));
     }
 
