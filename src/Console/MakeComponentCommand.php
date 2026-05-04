@@ -36,11 +36,17 @@ final class MakeComponentCommand extends Command
             return self::FAILURE;
         }
 
-        if (! is_dir($directory)) {
-            mkdir($directory, 0755, true);
+        if (! is_dir($directory) && ! mkdir($directory, 0755, true)) {
+            $this->components->error("Failed to create directory [{$directory}].");
+
+            return self::FAILURE;
         }
 
-        file_put_contents($filePath, $this->buildClass($className, $namespace, $concerns));
+        if (file_put_contents($filePath, $this->buildClass($className, $namespace, $concerns)) === false) {
+            $this->components->error("Failed to write file [{$filePath}].");
+
+            return self::FAILURE;
+        }
 
         $this->components->info("Component [{$filePath}] created successfully.");
 
