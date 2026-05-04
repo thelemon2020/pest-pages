@@ -82,6 +82,48 @@ $page = LoginPage::open();
 
 Both return an instance of `LoginPage`, giving you full IDE autocompletion for any methods you have defined on that class.
 
+### Parameterized URLs
+
+For pages whose URL includes a dynamic segment — a product ID, a user slug, a post number — use `{param}` placeholders in `url()` and pass the values when navigating:
+
+```php
+class ProductPage extends Page
+{
+    public static function url(): string
+    {
+        return '/products/{id}';
+    }
+}
+```
+
+```php
+// Navigate directly
+ProductPage::open(['id' => 42]);
+
+// Navigate from another page
+$page->navigateTo(ProductPage::class, ['id' => 42]);
+```
+
+Multiple placeholders work the same way:
+
+```php
+class PostPage extends Page
+{
+    public static function url(): string
+    {
+        return '/users/{userId}/posts/{postId}';
+    }
+}
+
+PostPage::open(['userId' => 3, 'postId' => 99]);
+```
+
+When using `nowOn()` after a server-side redirect to a parameterized page, you do not need to supply the values — the URL is matched as a pattern, so `/products/42` and `/products/99` both satisfy `nowOn(ProductPage::class)`:
+
+```php
+$page->submitPurchase()->nowOn(ProductPage::class);
+```
+
 ### Fluent Chaining
 
 Every method on a Page Object returns `static`, so you can chain interactions naturally:
@@ -197,11 +239,17 @@ it('redirects to the dashboard after login', function () {
 });
 ```
 
+Pass a parameters array as the second argument for pages with `{param}` placeholders in their URL:
+
+```php
+$page->navigateTo(ProductPage::class, ['id' => 42]);
+```
+
 #### `nowOn()`
 
 Re-wraps the current browser session as a different page type **without reloading the page**. Use this after an action (like submitting a form) that causes a server-side redirect — the browser has already landed on the new page, so there's no need to navigate again.
 
-`nowOn()` verifies that the browser's current URL matches the destination page's URL and throws an exception if it doesn't, catching unexpected redirects (e.g. an auth failure that sends the user back to `/login`) immediately.
+`nowOn()` verifies that the browser's current URL matches the destination page's URL and throws an exception if it doesn't, catching unexpected redirects (e.g. an auth failure that sends the user back to `/login`) immediately. For pages with `{param}` placeholders in their URL, the check is pattern-based — any value in that segment is accepted, so you don't need to know the exact ID the server redirected to.
 
 ```php
 it('redirects to the dashboard after login', function () {
@@ -217,7 +265,8 @@ it('redirects to the dashboard after login', function () {
 |---|---|---|
 | Navigates the browser | Yes | No |
 | Preserves session | Yes | Yes |
-| Verifies current URL | No | Yes |
+| Verifies current URL | No | Yes (exact or pattern) |
+| Accepts `{param}` values | Yes | Pattern-matched automatically |
 | Use when | You want to send the browser somewhere | The browser already arrived via redirect |
 
 ---

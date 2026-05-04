@@ -5,6 +5,7 @@ declare(strict_types=1);
 use Pest\Browser\Api\PendingAwaitablePage;
 use Thelemon2020\PestPom\Tests\Fixtures\AnotherPage;
 use Thelemon2020\PestPom\Tests\Fixtures\ExamplePage;
+use Thelemon2020\PestPom\Tests\Fixtures\ParameterizedPage;
 
 // Returns an ExamplePage whose createVisit() stub avoids starting a real browser.
 function navigatablePage(): ExamplePage
@@ -29,4 +30,24 @@ it('returns a new instance, not the original page', function () {
     $page = navigatablePage();
 
     expect($page->navigateTo(ExamplePage::class))->not->toBe($page);
+});
+
+it('navigates to a parameterized page with substituted URL', function () {
+    $visited = null;
+
+    $page = new class(pendingBrowser()) extends ExamplePage {
+        public ?string $lastVisited = null;
+
+        protected function createVisit(string $url): PendingAwaitablePage
+        {
+            $this->lastVisited = $url;
+
+            return pendingBrowser();
+        }
+    };
+
+    $result = $page->navigateTo(ParameterizedPage::class, ['id' => 7]);
+
+    expect($result)->toBeInstanceOf(ParameterizedPage::class)
+        ->and($page->lastVisited)->toBe('/products/7');
 });

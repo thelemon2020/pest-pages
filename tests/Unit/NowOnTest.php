@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Thelemon2020\PestPom\Tests\Fixtures\AnotherPage;
 use Thelemon2020\PestPom\Tests\Fixtures\ExamplePage;
+use Thelemon2020\PestPom\Tests\Fixtures\ParameterizedPage;
 
 // Creates an ExamplePage that reports being at $url, without a live browser.
 function examplePageAt(string $url): ExamplePage
@@ -63,3 +64,15 @@ it('ignores query strings when comparing paths', function () {
 
     expect($page->nowOn(ExamplePage::class))->toBeInstanceOf(ExamplePage::class);
 });
+
+it('matches a parameterized URL when the segment value is present', function () {
+    $page = examplePageAt('http://localhost/products/42');
+
+    expect($page->nowOn(ParameterizedPage::class))->toBeInstanceOf(ParameterizedPage::class);
+});
+
+it('throws when the path does not match the parameterized pattern', function () {
+    $page = examplePageAt('http://localhost/example');
+
+    $page->nowOn(ParameterizedPage::class);
+})->throws(RuntimeException::class);

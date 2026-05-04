@@ -33,15 +33,33 @@ abstract class Page
     abstract public static function url(): string;
 
     /**
+     * Substitute `{param}` placeholders in the URL template.
+     *
+     * @param  array<string, mixed>  $parameters
+     */
+    public static function resolveUrl(array $parameters = []): string
+    {
+        $url = static::url();
+
+        foreach ($parameters as $key => $value) {
+            $url = str_replace('{' . $key . '}', (string) $value, $url);
+        }
+
+        return $url;
+    }
+
+    /**
      * Navigate to this page and return a typed instance.
      *
      * Enforces that the page class lives in the configured pages directory.
+     *
+     * @param  array<string, mixed>  $parameters  Values for any `{param}` placeholders in `url()`.
      */
-    public static function open(): static
+    public static function open(array $parameters = []): static
     {
         Config::assertPageIsInConfiguredDirectory(static::class);
 
-        return new static(visit(static::url()));
+        return new static(visit(static::resolveUrl($parameters)));
     }
 
     /**
@@ -72,7 +90,7 @@ abstract class Page
             $currentPath = rtrim((string) parse_url($currentUrl, PHP_URL_PATH), '/');
             $expectedPath = rtrim((string) parse_url($pageClass::url(), PHP_URL_PATH), '/');
 
-            if ($currentPath !== $expectedPath) {
+            if (! $this->pathMatchesPattern($currentPath, $expectedPath)) {
                 throw new \RuntimeException(
                     "Expected to be on [{$expectedPath}] but the browser is at [{$currentPath}]."
                 );
@@ -100,21 +118,46 @@ abstract class Page
      * Use when an action (e.g. submitting a form) takes you to a new screen.
      **
      * @param  class-string<Page>  $pageClass
+     * @param  array<string, mixed>  $parameters  Values for any `{param}` placeholders in the target page's `url()`.
      * @return Page
      */
-    public function navigateTo(string $pageClass): Page
+    public function navigateTo(string $pageClass, array $parameters = []): Page
     {
+        $resolvedUrl = $pageClass::resolveUrl($parameters);
+
         // When the browser is already resolved, reuse the existing Playwright page
         // (and its context) so cookies/session/auth state are preserved.
         // Calling visit() would create a new browser context (fresh incognito), losing the session.
         if ($this->browser instanceof AwaitableWebpage) {
-            $url = ComputeUrl::from($pageClass::url());
+            $url = ComputeUrl::from($resolvedUrl);
             $this->browser->page()->goto($url);
 
             return new $pageClass(new AwaitableWebpage($this->browser->page(), $url));
         }
 
-        return new $pageClass($this->createVisit($pageClass::url()));
+        return new $pageClass($this->createVisit($resolvedUrl));
+    }
+
+    /**
+     * Returns true when $currentPath matches the URL pattern, treating
+     * `{param}` segments as wildcards that match any single path segment.
+     */
+    private function pathMatchesPattern(string $currentPath, string $patternPath): bool
+    {
+        if (! str_contains($patternPath, '{')) {
+            return $currentPath === $patternPath;
+        }
+
+        $segments = (array) preg_split('/(\{[^}]+\})/', $patternPath, -1, PREG_SPLIT_DELIM_CAPTURE);
+        $regex = '';
+
+        foreach ($segments as $segment) {
+            $regex .= preg_match('/^\{[^}]+\}$/', $segment)
+                ? '[^/]+'
+                : preg_quote($segment, '#');
+        }
+
+        return (bool) preg_match('#^' . $regex . '$#', $currentPath);
     }
 
     /**
