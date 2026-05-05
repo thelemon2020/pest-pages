@@ -111,7 +111,7 @@ it('falls back to Tests\\Browser\\Pages when no PSR-4 map matches', function () 
 });
 
 it('uses the configured path when generating files', function () {
-    config(['pest-pom.path' => 'tests/Custom/Pages']);
+    config(['pest-plugin-pom.path' => 'tests/Custom/Pages']);
 
     $this->artisan('pest:page', ['name' => 'Login'])->assertSuccessful();
 

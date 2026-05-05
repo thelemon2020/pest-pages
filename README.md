@@ -4,27 +4,30 @@ A [Pest](https://pestphp.com) plugin for writing expressive browser tests using 
 
 Page Objects keep your browser tests readable and maintainable by encapsulating page-specific selectors and interactions into dedicated classes. The plugin integrates with [pest-plugin-browser](https://github.com/pestphp/pest-plugin-browser) and automatically starts the Playwright server for any test that uses a Page Object — no manual setup required.
 
+> **Note:** This plugin is designed for **Laravel** applications. It requires the Laravel framework for configuration, service provider registration, and the included Artisan generator commands.
+
 ---
 
 ## Requirements
 
 - PHP ^8.3
+- Laravel ^11.0|^12.0|^13.0
 - Pest ^4.0
 - pest-plugin-browser ^4.0
 
 ## Installation
 
 ```bash
-composer require thelemon2020/pest-pom --dev
+composer require thelemon2020/pest-plugin-pom --dev
 ```
 
 ### Publishing the config
 
 ```bash
-php artisan vendor:publish --tag=pest-pom-config
+php artisan vendor:publish --tag=pest-plugin-pom-config
 ```
 
-This creates `config/pest-pom.php`:
+This creates `config/pest-plugin-pom.php`:
 
 ```php
 return [
@@ -98,6 +101,9 @@ class ProductPage extends Page
 
 ```php
 // Navigate directly
+page(ProductPage::class, ['id' => 42]);
+
+// or equivalently
 ProductPage::open(['id' => 42]);
 
 // Navigate from another page
@@ -395,7 +401,7 @@ class RegistrationPage extends Page
 |--------|-------------|
 | `fillForm(array $fields)` | Fill multiple fields at once, keyed by label |
 | `submitForm(string $button = 'Submit')` | Click a submit button by its label |
-| `check(string $label)` | Check a checkbox or radio button by label |
+| `checkBox(string $label)` | Check a checkbox by label |
 | `choose(string $field, array\|string\|int $option)` | Select a dropdown option by label |
 
 ```php
@@ -405,7 +411,7 @@ page(RegistrationPage::class)
         'Email'    => 'jane@example.com',
         'Password' => 'super-secret',
     ])
-    ->check('I agree to the terms and conditions')
+    ->checkBox('I agree to the terms and conditions')
     ->choose('Country', 'United States')
     ->submitForm('Create account');
 ```
@@ -557,7 +563,7 @@ class RegistrationPage extends Page
                 'Email'    => $email,
                 'Password' => $password,
             ])
-            ->check('I agree to the terms')
+            ->checkBox('I agree to the terms')
             ->submitForm('Create account');
     }
 }

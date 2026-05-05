@@ -86,10 +86,10 @@ describe('InteractsWithForms', function () {
         expect($page->calls)->toContain(['method' => 'press', 'args' => ['Submit']]);
     });
 
-    it('check delegates to click with the label', function () {
+    it('checkBox delegates to check with the label', function () {
         $page = pageWithForms();
-        $page->check('Remember me');
-        expect($page->calls)->toContain(['method' => 'click', 'args' => ['Remember me']]);
+        $page->checkBox('Remember me');
+        expect($page->calls)->toContain(['method' => 'check', 'args' => ['Remember me']]);
     });
 
     it('choose delegates to select with field and option', function () {

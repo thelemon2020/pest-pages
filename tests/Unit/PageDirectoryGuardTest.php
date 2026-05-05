@@ -7,7 +7,7 @@ use Thelemon2020\PestPom\Tests\Fixtures\ExamplePage;
 
 it('does not throw when a page class lives in the configured directory', function () {
     $fixturesDir = dirname((new ReflectionClass(ExamplePage::class))->getFileName());
-    config(['pest-pom.path' => $fixturesDir]);
+    config(['pest-plugin-pom.path' => $fixturesDir]);
 
     Config::assertPageIsInConfiguredDirectory(ExamplePage::class);
 

@@ -14,9 +14,10 @@ use Thelemon2020\PestPom\Page;
  * @template TPage of Page
  *
  * @param  class-string<TPage>  $pageClass
+ * @param  array<string, mixed>  $parameters
  * @return TPage
  */
-function page(string $pageClass): Page
+function page(string $pageClass, array $parameters = []): Page
 {
-    return $pageClass::open();
+    return $pageClass::open($parameters);
 }

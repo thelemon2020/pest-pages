@@ -9,13 +9,13 @@ it('returns the default path when no override is set', function () {
 });
 
 it('returns a custom path from the config', function () {
-    config(['pest-pom.path' => 'tests/Custom/Pages']);
+    config(['pest-plugin-pom.path' => 'tests/Custom/Pages']);
 
     expect(Config::path())->toBe('tests/Custom/Pages');
 });
 
 it('absolutePath resolves a relative path against the project root', function () {
-    config(['pest-pom.path' => 'tests/Browser/Pages']);
+    config(['pest-plugin-pom.path' => 'tests/Browser/Pages']);
 
     expect(Config::absolutePath())
         ->toStartWith(base_path())
@@ -24,7 +24,7 @@ it('absolutePath resolves a relative path against the project root', function ()
 
 it('absolutePath returns an absolute path unchanged', function () {
     $absolute = '/some/absolute/path';
-    config(['pest-pom.path' => $absolute]);
+    config(['pest-plugin-pom.path' => $absolute]);
 
     expect(Config::absolutePath())->toBe($absolute);
 });

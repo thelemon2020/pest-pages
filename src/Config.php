@@ -20,11 +20,11 @@ final class Config
     public static function path(): string
     {
         if (function_exists('config')) {
-            return config('pest-pom.path', self::DEFAULT_PATH);
+            return config('pest-plugin-pom.path', self::DEFAULT_PATH);
         }
 
         $root = function_exists('base_path') ? base_path() : getcwd();
-        $file = $root.'/config/pest-pom.php';
+        $file = $root.'/config/pest-plugin-pom.php';
 
         if (file_exists($file)) {
             return (require $file)['path'] ?? self::DEFAULT_PATH;

@@ -34,11 +34,11 @@ trait InteractsWithForms
     }
 
     /**
-     * Check a checkbox or radio by its label.
+     * Check a checkbox by its label.
      */
-    public function check(string $label): static
+    public function checkBox(string $label): static
     {
-        return $this->click($label);
+        return $this->check($label);
     }
 
     /**

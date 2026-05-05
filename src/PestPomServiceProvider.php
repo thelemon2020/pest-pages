@@ -13,8 +13,8 @@ final class PestPomServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->mergeConfigFrom(
-            __DIR__.'/../config/pest-pom.php',
-            'pest-pom',
+            __DIR__.'/../config/pest-plugin-pom.php',
+            'pest-plugin-pom',
         );
     }
 
@@ -22,8 +22,8 @@ final class PestPomServiceProvider extends ServiceProvider
     {
         if ($this->app->runningInConsole()) {
             $this->publishes([
-                __DIR__.'/../config/pest-pom.php' => config_path('pest-pom.php'),
-            ], 'pest-pom-config');
+                __DIR__.'/../config/pest-plugin-pom.php' => config_path('pest-plugin-pom.php'),
+            ], 'pest-plugin-pom-config');
 
             $this->commands([MakePageCommand::class, MakeComponentCommand::class]);
         }
