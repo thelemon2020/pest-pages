@@ -1,4 +1,4 @@
-# Pest POM
+# Pest Plugin POM
 
 A [Pest](https://pestphp.com) plugin for writing expressive browser tests using the **Page Object Model** pattern.
 
