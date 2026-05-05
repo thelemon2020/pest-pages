@@ -4,6 +4,8 @@ A [Pest](https://pestphp.com) plugin for writing expressive browser tests using 
 
 Page Objects keep your browser tests readable and maintainable by encapsulating page-specific selectors and interactions into dedicated classes. The plugin integrates with [pest-plugin-browser](https://github.com/pestphp/pest-plugin-browser) and automatically starts the Playwright server for any test that uses a Page Object — no manual setup required.
 
+> **Early Release:** This plugin is in early development (pre-v1). Bugs are expected — if you encounter one, please [open an issue](https://github.com/thelemon2020/pest-plugin-pom/issues). Feedback and suggestions are very welcome.
+
 > **Note:** This plugin is designed for **Laravel** applications. It requires the Laravel framework for configuration, service provider registration, and the included Artisan generator commands.
 
 ---
