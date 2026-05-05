@@ -2,7 +2,9 @@
 
 declare(strict_types=1);
 
-require_once __DIR__.'/Expectations.php';
+if (function_exists('expect')) {
+    require_once __DIR__.'/Expectations.php';
+}
 
 use Thelemon2020\PestPom\Page;
 

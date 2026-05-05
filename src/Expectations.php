@@ -8,7 +8,12 @@ use Thelemon2020\PestPom\Page;
 expect()->extend('toBeOnPage', function (string $pageClass): Expectation {
     /** @var Page $page */
     $page = $this->value;
-    $page->assertPathIs($pageClass::url());
+
+    if (str_contains($pageClass::url(), '{')) {
+        $page->nowOn($pageClass);
+    } else {
+        $page->assertPathIs($pageClass::url());
+    }
 
     return $this;
 });
